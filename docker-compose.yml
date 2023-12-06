@@ -1,0 +1,34 @@
+version: "3.8"
+
+services:
+    nextcloud:
+        build:
+            dockerfile: ./Dockerfile
+        container_name: nextcloud
+        volumes:
+            - /srv/http/nextcloud/master/apps-repos/user_saml:/var/www/server/apps/user_saml
+        networks:
+            - testnet
+        depends_on:
+            - sso
+            - directory
+
+    sso:
+        image: ghcr.io/nextcloud/continuous-integration-user_saml_shibboleth-idp:latest
+        container_name: sso
+        networks:
+            - testnet
+        ports:
+            - 4443:8443/tcp
+            - 9090:8080/tcp
+
+    directory:
+        image: ghcr.io/nextcloud/continuous-integration-user_saml-dirsrv:latest
+        container_name: directory
+        networks:
+            - testnet
+        ports:
+            - 389:3389/tcp
+
+networks:
+    testnet:
