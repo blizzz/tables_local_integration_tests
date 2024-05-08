@@ -1,5 +1,7 @@
 FROM ubuntu:22.04
 
+ENV TEST_SERVER_URL=localhost:8080/
+
 RUN apt update; \
     DEBIAN_FRONTEND=noninteractive apt install -yq composer php php-zip php-dom php-gd php-mbstring php-curl php-xml php-sqlite3 git
 
